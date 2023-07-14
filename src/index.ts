@@ -2,6 +2,10 @@ import { AppDataSource } from "./data-source";
 import { User } from "./entity/User";
 import { Products } from "./entity/Products";
 import { Orders } from "./entity/Orders";
+import * as dotenv from "dotenv";
+import app from "./app";
+
+dotenv.config();
 
 AppDataSource.initialize()
   .then(async () => {
@@ -64,3 +68,7 @@ AppDataSource.initialize()
     );
   })
   .catch((error) => console.log(error));
+
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on port ${process.env.PORT}`);
+});
