@@ -7,19 +7,22 @@ import {
 } from "typeorm";
 import { DBTable } from "../constants/DBTable";
 
-@Entity(DBTable.PRODUCTS)
-export class Products {
+@Entity(DBTable.ORDERS)
+export class Orders {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  name: string;
+  code: string;
+
+  @Column({ default: "ecommerce" })
+  seller: string;
 
   @Column()
-  description: string;
+  customer: string;
 
   @Column({ type: "decimal", precision: 5, scale: 2, default: 0 })
-  price: number;
+  totalAmount: number;
 
   @CreateDateColumn()
   createdAt!: Date;

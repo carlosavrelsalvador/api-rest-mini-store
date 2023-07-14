@@ -1,10 +1,11 @@
 import { AppDataSource } from "./data-source";
 import { User } from "./entity/User";
 import { Products } from "./entity/Products";
+import { Orders } from "./entity/Orders";
 
 AppDataSource.initialize()
   .then(async () => {
-    // user defaul
+    // user default
     const user = new User();
     user.firstName = "Timber";
     user.lastName = "Saw";
@@ -21,7 +22,7 @@ AppDataSource.initialize()
       console.log("Saved a new user with id: " + user.id);
     }
 
-    // product defauls
+    // product default
     const product = new Products();
     product.createdAt = new Date();
     product.description = "Botella 750 ml";
@@ -35,12 +36,29 @@ AppDataSource.initialize()
       await AppDataSource.manager.save(product);
       console.log("Saved a new product with id: " + product.id);
     }
+    // orders default
+    const order = new Orders();
+    order.code = "SV0001";
+    order.customer = "1";
+    order.totalAmount = 34.99;
+    order.createdAt = new Date();
+    const orders = await AppDataSource.manager.find(Orders);
+    console.log("typeof (orders) = ", typeof orders);
+    if (orders.length <= 0) {
+      console.log("Inserting a new order into the database...");
+      await AppDataSource.manager.save(order);
+      console.log("Saved a new order with id: " + order.id);
+    }
     //
     console.log("Loading users from the database...");
     console.log("Loaded users: ", users);
     //
     console.log("Loading products from the database...");
     console.log("Loaded products: ", products);
+    //
+    console.log("Loading products from the database...");
+    console.log("Loaded products: ", orders);
+    //
     console.log(
       "Here you can setup and run express / fastify / any other framework."
     );
