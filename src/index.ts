@@ -17,6 +17,9 @@ AppDataSource.initialize()
     user.createdAt = new Date();
     user.email = "usuario@gmail.com";
     user.role = 2;
+    user.password = "12345";
+    user.updatedAt = new Date();
+    user.name = user.firstName;
 
     const users = await AppDataSource.manager.find(User);
     console.log("typeof (users) = ", typeof users);
@@ -61,7 +64,7 @@ AppDataSource.initialize()
     console.log("Loaded products: ", products);
     //
     console.log("Loading products from the database...");
-    console.log("Loaded products: ", orders);
+    console.log("Loaded orders: ", orders);
     //
     console.log(
       "Here you can setup and run express / fastify / any other framework."
