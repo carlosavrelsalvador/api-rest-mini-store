@@ -1,5 +1,5 @@
 import { IsEmail, IsNotEmpty, MaxLength, MinLength } from "class-validator";
-import { User } from "./../entity/User";
+import { Users } from "./../entity/User";
 import { IsUnique } from "./../validators/IsUniqueValidator";
 
 export class RegisterDTO {
@@ -10,7 +10,7 @@ export class RegisterDTO {
 
   @IsNotEmpty()
   @IsEmail()
-  @IsUnique(User, "email")
+  @IsUnique(Users, "email")
   email: string;
 
   @IsNotEmpty()

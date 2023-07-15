@@ -1,5 +1,5 @@
 import { AppDataSource } from "./data-source";
-import { User } from "./entity/User";
+import { Users } from "./entity/User";
 import { Products } from "./entity/Products";
 import { Orders } from "./entity/Orders";
 import * as dotenv from "dotenv";
@@ -10,7 +10,7 @@ dotenv.config();
 AppDataSource.initialize()
   .then(async () => {
     // user default
-    const user = new User();
+    const user = new Users();
     user.firstName = "Timber";
     user.lastName = "Saw";
     user.age = 25;
@@ -21,7 +21,7 @@ AppDataSource.initialize()
     user.updatedAt = new Date();
     user.name = user.firstName;
 
-    const users = await AppDataSource.manager.find(User);
+    const users = await AppDataSource.manager.find(Users);
     console.log("typeof (users) = ", typeof users);
     if (users.length <= 0) {
       console.log("Inserting a new user into the database...");

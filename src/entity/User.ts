@@ -1,15 +1,18 @@
+import { hash } from "bcryptjs";
 import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  BeforeInsert,
 } from "typeorm";
+
 import { DBTable } from "../constants/DBTable";
 import { Roles } from "./../constants/Role";
 
 @Entity(DBTable.USERS)
-export class User {
+export class Users {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -25,6 +28,10 @@ export class User {
   @Column()
   password: string;
 
+  @BeforeInsert()
+  async hashPassword() {
+    this.password = await hash(this.password, 12);
+  }
   @Column()
   age: number;
 
@@ -40,8 +47,8 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  toResponse(): Partial<User> {
-    const responseUser = new User();
+  toResponse(): Partial<Users> {
+    const responseUser = new Users();
     responseUser.id = this.id;
     responseUser.name = this.name;
     responseUser.email = this.email;

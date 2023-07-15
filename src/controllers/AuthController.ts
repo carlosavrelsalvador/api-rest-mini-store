@@ -1,5 +1,5 @@
 import { AppDataSource } from "./../data-source";
-import { User } from "./../entity/User";
+import { Users } from "./../entity/User";
 import { ResponseUtil } from "./../utils/Response";
 import { LoginDTO, RegisterDTO } from "./../dtos/AuthDTO";
 import { compare } from "bcryptjs";
@@ -22,7 +22,7 @@ export class AuthController {
 
     await validateOrReject(dto);
 
-    const repo = AppDataSource.getRepository(User);
+    const repo = AppDataSource.getRepository(Users);
     const user = repo.create(registerData);
     await repo.save(user);
 
@@ -35,6 +35,7 @@ export class AuthController {
   }
 
   async login(req: Request, res: Response, next: NextFunction) {
+    console.log("req.body = ", req.body);
     const { email, password } = req.body;
     const dto = new LoginDTO();
     dto.email = email;
@@ -42,14 +43,25 @@ export class AuthController {
 
     await validateOrReject(dto);
 
-    const repo = AppDataSource.getRepository(User);
+    const repo = AppDataSource.getRepository(Users);
     const user = await repo.findOneBy({ email });
-    if (!user) {
-      return ResponseUtil.sendErrror(res, "Invalid credentials", 401, null);
+    console.log(
+      "user =",
+      user,
+      "Object.keys(user).length = ",
+      Object.keys(user).length,
+      "password = ",
+      password,
+      "user.password = ",
+      user.password
+    );
+    if (Object.keys(user).length <= 0) {
+      return ResponseUtil.sendErrror(res, "Invalid credentials 1", 401, null);
     }
     let passwordMatches = await compare(password, user.password);
+    console.log("passwordMatches = ", passwordMatches);
     if (!passwordMatches) {
-      return ResponseUtil.sendErrror(res, "Invalid credentials", 401, null);
+      return ResponseUtil.sendErrror(res, "Invalid credentials 2", 401, null);
     }
     let accessToken = sign(
       { userId: user.id },
