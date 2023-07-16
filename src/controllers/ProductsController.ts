@@ -103,6 +103,19 @@ export class ProductsController {
 
   // ROLE == Admin
   // 3. Delete products
+  async deleteProduct(req: Request, res: Response): Promise<Response> {
+    const { id } = req.body;
+    const repo = AppDataSource.getRepository(Products);
+    const product = await repo.findOneByOrFail({
+      id: Number(id),
+    });
+    await repo.remove(product);
+    return ResponseUtil.sendResponse(
+      res,
+      "Successfully deleted the product",
+      null
+    );
+  }
 
   // ROLE == Admin
   // 4. Deactivate products

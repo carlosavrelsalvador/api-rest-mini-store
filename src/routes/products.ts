@@ -29,6 +29,12 @@ router.put(
 
 // ROLE == Admin
 // 3. Delete products
+router.delete(
+  "/deleteProduct",
+  ErrorHandler.catchErrors(AuthMiddleware.authenticate),
+  ErrorHandler.catchErrors(AdminMiddleware.check),
+  ErrorHandler.catchErrors(productsController.deleteProduct)
+);
 
 // ROLE == Admin
 // 4. Deactivate products
