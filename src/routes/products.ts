@@ -9,12 +9,20 @@ const productsController = new ProductsController();
 const router = express.Router();
 router.get("/", ErrorHandler.catchErrors(productsController.get));
 
-// 1. Ver productos (viewCategory)
 // ROLE == User (registered user)
+// 1. Ver productos (viewCategory)
 router.get(
   "/viewCategory",
   ErrorHandler.catchErrors(AuthMiddleware.authenticate),
   ErrorHandler.catchErrors(productsController.viewCategory)
+);
+
+// ROLE == User (registered user)
+// 2. Ver el detalle del producto
+router.get(
+  "/getProduct",
+  ErrorHandler.catchErrors(AuthMiddleware.authenticate),
+  ErrorHandler.catchErrors(productsController.getProduct)
 );
 
 // any role

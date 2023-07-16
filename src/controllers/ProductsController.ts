@@ -78,6 +78,22 @@ export class ProductsController {
     );
   }
 
+  // getProduct by id
+  async getProduct(req: Request, res: Response): Promise<Response> {
+    const { id } = req.body;
+    const product = await AppDataSource.getRepository(Products).findOneByOrFail(
+      {
+        id: Number(id),
+      }
+    );
+
+    return ResponseUtil.sendResponse<Partial<Products>>(
+      res,
+      "Fetch product successfully",
+      product.toPayload()
+    );
+  }
+
   // ROLE == Admin
   // 1. Create products
   async createProduct(req: Request, res: Response): Promise<Response> {
