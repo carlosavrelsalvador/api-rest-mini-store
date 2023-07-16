@@ -4,6 +4,7 @@ import { AppDataSource } from "../data-source";
 import { Paginator } from "../Paginator";
 import { ResponseUtil } from "../utils/Response";
 import { Products } from "../entity/Products";
+import { CreateProductDTO } from "../dtos/ProductDTO";
 
 export class ProductsController {
   // list products
@@ -28,6 +29,7 @@ export class ProductsController {
     );
   }
 
+  // search product
   async search(req: Request, res: Response, next: NextFunction) {
     const { txtSearch } = req.body;
 
@@ -49,4 +51,34 @@ export class ProductsController {
       null
     );
   }
+
+  // ROLE == Admin
+  // 1. Create products
+  async createProduct(req: Request, res: Response): Promise<Response> {
+    const productData = req.body;
+
+    const dto = new CreateProductDTO();
+    Object.assign(dto, productData);
+
+    await validateOrReject(dto);
+
+    const repo = AppDataSource.getRepository(Products);
+    const product = repo.create(productData);
+    await repo.save(product);
+
+    return ResponseUtil.sendResponse(
+      res,
+      "Successfully created new product",
+      product,
+      200
+    );
+  }
+  // ROLE == Admin
+  // 2. Update products
+
+  // ROLE == Admin
+  // 3. Delete products
+
+  // ROLE == Admin
+  // 4. Deactivate products
 }

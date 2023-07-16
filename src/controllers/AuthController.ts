@@ -45,21 +45,20 @@ export class AuthController {
 
     const repo = AppDataSource.getRepository(Users);
     const user = await repo.findOneBy({ email });
-    console.log(
-      "user =",
-      user,
-      "Object.keys(user).length = ",
-      Object.keys(user).length,
-      "password = ",
-      password,
-      "user.password = ",
-      user.password
-    );
+    // console.log(
+    //   "user =",
+    //   user,
+    //   "Object.keys(user).length = ",
+    //   Object.keys(user).length,
+    //   "password = ",
+    //   password,
+    //   "user.password = ",
+    //   user.password
+    // );
     if (Object.keys(user).length <= 0) {
       return ResponseUtil.sendErrror(res, "Invalid credentials 1", 401, null);
     }
     let passwordMatches = await compare(password, user.password);
-    console.log("passwordMatches = ", passwordMatches);
     if (!passwordMatches) {
       return ResponseUtil.sendErrror(res, "Invalid credentials 2", 401, null);
     }
@@ -67,7 +66,7 @@ export class AuthController {
       { userId: user.id },
       process.env.ACCESS_KEY_SECRET || "secret123",
       {
-        expiresIn: "30m",
+        expiresIn: "12h",
       }
     );
 
