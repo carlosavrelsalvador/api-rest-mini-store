@@ -16,4 +16,12 @@ router.post(
   ErrorHandler.catchErrors(AuthMiddleware.authenticate),
   ErrorHandler.catchErrors(cartController.pushProduct)
 );
+
+// recovery cart by user
+router.get(
+  "/",
+  ErrorHandler.catchErrors(AuthMiddleware.authenticate),
+  ErrorHandler.catchErrors(cartController.get)
+);
+
 export default router;

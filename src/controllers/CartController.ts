@@ -29,4 +29,25 @@ export class CartController {
       200
     );
   }
+
+  // list product in cart
+  async get(req: Request, res: Response, next: NextFunction) {
+    const { user_id } = req.body;
+
+    const builder = await AppDataSource.getRepository(Carts)
+      .createQueryBuilder("carts")
+      .where("carts.user_id = :user_id", { user_id })
+      .getMany();
+
+    const itemsData = builder.map((products: Carts) => {
+      return products.toPayload();
+    });
+
+    return ResponseUtil.sendResponse(
+      res,
+      "Fetched products in cart successfully",
+      itemsData,
+      null
+    );
+  }
 }
