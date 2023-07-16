@@ -7,6 +7,7 @@ import { Products } from "../entity/Products";
 import { CreateCartDTO } from "../dtos/CartDTO";
 import { Carts } from "../entity/Cart";
 import { Orders } from "../entity/Orders";
+import { CreateOrderDTO } from "../dtos/OrderDTO";
 
 export class OrdersController {
   // list all orders
@@ -56,6 +57,28 @@ export class OrdersController {
       "Fetched my orders successfully",
       ordersData,
       paginationInfo
+    );
+  }
+
+  // ROLE == User
+  // 1. Create Order
+  async addOrder(req: Request, res: Response): Promise<Response> {
+    const orderData = req.body;
+
+    const dto = new CreateOrderDTO();
+    Object.assign(dto, orderData);
+
+    await validateOrReject(dto);
+
+    const repo = AppDataSource.getRepository(Orders);
+    const order = repo.create(orderData);
+    await repo.save(order);
+
+    return ResponseUtil.sendResponse(
+      res,
+      "Successfully created new order by user",
+      order,
+      200
     );
   }
 }

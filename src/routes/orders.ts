@@ -25,4 +25,10 @@ router.get(
   ErrorHandler.catchErrors(ordersController.getCustomerOrders)
 );
 
+router.post(
+  "/addOrder",
+  ErrorHandler.catchErrors(AuthMiddleware.authenticate),
+  ErrorHandler.catchErrors(ordersController.addOrder)
+);
+
 export default router;
