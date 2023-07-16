@@ -10,6 +10,11 @@ const ordersController = new OrdersController();
 const router = express.Router();
 
 // get all orders any customer
-router.get("/", ErrorHandler.catchErrors(ordersController.get));
+router.get(
+  "/",
+  ErrorHandler.catchErrors(AuthMiddleware.authenticate),
+  ErrorHandler.catchErrors(AdminMiddleware.check),
+  ErrorHandler.catchErrors(ordersController.get)
+);
 
 export default router;
