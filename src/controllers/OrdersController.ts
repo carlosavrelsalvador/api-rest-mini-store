@@ -32,4 +32,30 @@ export class OrdersController {
       paginationInfo
     );
   }
+
+  // My Orders
+  async getCustomerOrders(req: Request, res: Response) {
+    const { user_id } = req.body;
+
+    const builder = await AppDataSource.getRepository(Orders)
+      .createQueryBuilder("order")
+      .where("order.user_id = :user_id", { user_id })
+      .orderBy("id", "DESC");
+
+    const { records: orders, paginationInfo } = await Paginator.paginate(
+      builder,
+      req
+    );
+
+    const ordersData = orders.map((orders: Orders) => {
+      return orders.toPayload();
+    });
+
+    return ResponseUtil.sendResponse(
+      res,
+      "Fetched my orders successfully",
+      ordersData,
+      paginationInfo
+    );
+  }
 }
