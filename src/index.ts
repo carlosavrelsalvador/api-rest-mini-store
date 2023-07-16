@@ -35,6 +35,7 @@ AppDataSource.initialize()
     product.description = "Botella 750 ml";
     product.name = "Botella de licor";
     product.price = 34.99;
+    product.category = "General";
 
     const products = await AppDataSource.manager.find(Products);
     console.log("typeof (products) = ", typeof products);

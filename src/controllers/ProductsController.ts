@@ -1,5 +1,5 @@
 import { validateOrReject } from "class-validator";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { AppDataSource } from "../data-source";
 import { Paginator } from "../Paginator";
 import { ResponseUtil } from "../utils/Response";
@@ -25,6 +25,28 @@ export class ProductsController {
       "Fetched products successfully",
       productsData,
       paginationInfo
+    );
+  }
+
+  async search(req: Request, res: Response, next: NextFunction) {
+    const { txtSearch } = req.body;
+
+    const builder = await AppDataSource.getRepository(Products)
+      .createQueryBuilder("product")
+      .where("product.name like :txt", { txt: `%${txtSearch}%` })
+      .orWhere("product.category like :txt_two", { txt_two: `%${txtSearch}%` })
+      .limit(10)
+      .getMany();
+
+    const productsData = builder.map((products: Products) => {
+      return products.toPayload();
+    });
+
+    return ResponseUtil.sendResponse(
+      res,
+      "Fetched products successfully",
+      productsData,
+      null
     );
   }
 }
