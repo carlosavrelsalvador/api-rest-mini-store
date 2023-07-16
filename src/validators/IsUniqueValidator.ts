@@ -21,7 +21,7 @@ export class IsUniqueConstraint implements ValidatorConstraintInterface {
     const isUpdate: boolean = args.object["id"] !== undefined;
     let count = 0;
 
-    console.log(isUpdate);
+    // console.log(isUpdate);
 
     if (!isUpdate) {
       count = await repository.count({ where: { [field]: value } });

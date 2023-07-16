@@ -28,3 +28,23 @@ export class CreateProductDTO {
   @IsString()
   category: string;
 }
+
+export class UpdateProductDTO {
+  id?: number;
+
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(3)
+  @MaxLength(20)
+  name: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(3)
+  @MaxLength(200)
+  description: string;
+
+  @IsNotEmpty()
+  @IsString()
+  category: string;
+}

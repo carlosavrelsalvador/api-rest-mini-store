@@ -35,7 +35,7 @@ export class AuthController {
   }
 
   async login(req: Request, res: Response, next: NextFunction) {
-    console.log("req.body = ", req.body);
+    // console.log("req.body = ", req.body);
     const { email, password } = req.body;
     const dto = new LoginDTO();
     dto.email = email;

@@ -6,7 +6,7 @@ import { Users } from "./../entity/User";
 
 export class AuthMiddleware {
   static async authenticate(req: Request, res: Response, next: NextFunction) {
-    console.log("req.headers = ", req.headers);
+    // console.log("req.headers = ", req.headers);
     const { authorization: tokenHeader } = req.headers;
     if (!tokenHeader) {
       return ResponseUtil.sendErrror(res, "Token not provided", 401, null);

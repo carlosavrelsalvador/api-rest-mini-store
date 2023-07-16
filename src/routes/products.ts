@@ -20,6 +20,12 @@ router.post(
 
 // ROLE == Admin
 // 2. Update products
+router.put(
+  "/updateProduct",
+  ErrorHandler.catchErrors(AuthMiddleware.authenticate),
+  ErrorHandler.catchErrors(AdminMiddleware.check),
+  ErrorHandler.catchErrors(productsController.updateProduct)
+);
 
 // ROLE == Admin
 // 3. Delete products

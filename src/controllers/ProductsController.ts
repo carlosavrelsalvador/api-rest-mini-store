@@ -4,7 +4,7 @@ import { AppDataSource } from "../data-source";
 import { Paginator } from "../Paginator";
 import { ResponseUtil } from "../utils/Response";
 import { Products } from "../entity/Products";
-import { CreateProductDTO } from "../dtos/ProductDTO";
+import { CreateProductDTO, UpdateProductDTO } from "../dtos/ProductDTO";
 
 export class ProductsController {
   // list products
@@ -73,8 +73,33 @@ export class ProductsController {
       200
     );
   }
+
   // ROLE == Admin
   // 2. Update products
+  async updateProduct(req: Request, res: Response): Promise<Response> {
+    const { id } = req.body;
+    const productData = req.body;
+
+    const dto = new UpdateProductDTO();
+    Object.assign(dto, productData);
+    dto.id = parseInt(id);
+
+    await validateOrReject(dto);
+
+    const repo = AppDataSource.getRepository(Products);
+
+    const product = await repo.findOneByOrFail({
+      id: Number(id),
+    });
+
+    repo.merge(product, productData);
+    await repo.save(product);
+    return ResponseUtil.sendResponse(
+      res,
+      "Successfully updated the product",
+      product.toPayload()
+    );
+  }
 
   // ROLE == Admin
   // 3. Delete products
