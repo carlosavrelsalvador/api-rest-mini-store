@@ -63,7 +63,7 @@ AppDataSource.initialize()
     // orders default
     const order = new Orders();
     order.code = "SV0001";
-    order.customer = "1";
+    order.user_id = 1;
     order.totalAmount = 34.99;
     order.createdAt = new Date();
     const orders = await AppDataSource.manager.find(Orders);

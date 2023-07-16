@@ -6,6 +6,7 @@ import swaggerUi from "swagger-ui-express";
 import authRoute from "./routes/auth";
 import productsRoute from "./routes/products";
 import cartRoute from "./routes/cart";
+import ordersRoute from "./routes/orders";
 import * as swaggerDocument from "./swagger.json";
 
 const app: Express = express();
@@ -17,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/auth", authRoute);
 app.use("/product", productsRoute);
 app.use("/cart", cartRoute);
+app.use("/order", ordersRoute);
 
 // doc swagger
 var options = {
