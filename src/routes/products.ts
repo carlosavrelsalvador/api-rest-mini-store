@@ -38,4 +38,11 @@ router.delete(
 
 // ROLE == Admin
 // 4. Deactivate products
+router.put(
+  "/statusProduct",
+  ErrorHandler.catchErrors(AuthMiddleware.authenticate),
+  ErrorHandler.catchErrors(AdminMiddleware.check),
+  ErrorHandler.catchErrors(productsController.statusProduct)
+);
+
 export default router;

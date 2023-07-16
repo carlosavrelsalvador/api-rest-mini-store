@@ -4,7 +4,11 @@ import { AppDataSource } from "../data-source";
 import { Paginator } from "../Paginator";
 import { ResponseUtil } from "../utils/Response";
 import { Products } from "../entity/Products";
-import { CreateProductDTO, UpdateProductDTO } from "../dtos/ProductDTO";
+import {
+  CreateProductDTO,
+  StatusProductDTO,
+  UpdateProductDTO,
+} from "../dtos/ProductDTO";
 
 export class ProductsController {
   // list products
@@ -119,4 +123,28 @@ export class ProductsController {
 
   // ROLE == Admin
   // 4. Deactivate products
+  async statusProduct(req: Request, res: Response): Promise<Response> {
+    const { id } = req.body;
+    const productData = req.body;
+
+    const dto = new StatusProductDTO();
+    Object.assign(dto, productData);
+    dto.id = parseInt(id);
+
+    await validateOrReject(dto);
+
+    const repo = AppDataSource.getRepository(Products);
+
+    const product = await repo.findOneByOrFail({
+      id: Number(id),
+    });
+
+    repo.merge(product, productData);
+    await repo.save(product);
+    return ResponseUtil.sendResponse(
+      res,
+      "Successfully updated the product",
+      product.toPayload()
+    );
+  }
 }

@@ -27,6 +27,8 @@ export class CreateProductDTO {
   @IsNotEmpty()
   @IsString()
   category: string;
+
+  status: "Active";
 }
 
 export class UpdateProductDTO {
@@ -47,4 +49,12 @@ export class UpdateProductDTO {
   @IsNotEmpty()
   @IsString()
   category: string;
+}
+
+export class StatusProductDTO {
+  id?: number;
+
+  @IsNotEmpty()
+  @IsString()
+  status: string;
 }

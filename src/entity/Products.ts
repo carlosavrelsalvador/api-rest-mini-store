@@ -8,6 +8,7 @@ import {
 } from "typeorm";
 import { DBTable } from "../constants/DBTable";
 import { Category } from "../constants/Category";
+import { Status } from "../constants/Status";
 
 @Entity(DBTable.PRODUCTS)
 export class Products {
@@ -32,6 +33,9 @@ export class Products {
   @Column({ default: Category.DEFAULT })
   category: string;
 
+  @Column({ default: Status.DEFAULT })
+  status: string;
+
   toPayload(): Partial<Products> {
     return {
       id: this.id,
@@ -39,6 +43,7 @@ export class Products {
       description: this.description,
       category: this.category,
       price: this.price,
+      status: this.status,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
     };
