@@ -5,6 +5,7 @@ import cors from "cors";
 import swaggerUi from "swagger-ui-express";
 import authRoute from "./routes/auth";
 import productsRoute from "./routes/products";
+import cartRoute from "./routes/cart";
 import * as swaggerDocument from "./swagger.json";
 
 const app: Express = express();
@@ -15,6 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // todo - list endpoints
 app.use("/auth", authRoute);
 app.use("/product", productsRoute);
+app.use("/cart", cartRoute);
 
 // doc swagger
 var options = {

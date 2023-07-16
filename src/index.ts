@@ -4,6 +4,7 @@ import { Products } from "./entity/Products";
 import { Orders } from "./entity/Orders";
 import * as dotenv from "dotenv";
 import app from "./app";
+import { Carts } from "./entity/Cart";
 
 dotenv.config();
 
@@ -44,6 +45,21 @@ AppDataSource.initialize()
       await AppDataSource.manager.save(product);
       console.log("Saved a new product with id: " + product.id);
     }
+
+    // cart default
+    const cart = new Carts();
+    cart.ammount = 0;
+    cart.count = 0;
+    cart.createdAt = new Date();
+    cart.product_id = 0;
+    cart.user_id = 0;
+    const carts = await AppDataSource.manager.find(Carts);
+    if (carts.length <= 0) {
+      console.log("Inserting a new cart into the database...");
+      await AppDataSource.manager.save(cart);
+      console.log("Saved a new cart with id: " + cart.id);
+    }
+
     // orders default
     const order = new Orders();
     order.code = "SV0001";
