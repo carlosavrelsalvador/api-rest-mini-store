@@ -8,7 +8,18 @@ import { AdminMiddleware } from "../middlewares/AdminMiddleware";
 const productsController = new ProductsController();
 const router = express.Router();
 router.get("/", ErrorHandler.catchErrors(productsController.get));
+
+// 1. Ver productos (viewCategory)
+// ROLE == User (registered user)
+router.get(
+  "/viewCategory",
+  ErrorHandler.catchErrors(AuthMiddleware.authenticate),
+  ErrorHandler.catchErrors(productsController.viewCategory)
+);
+
+// any role
 router.post("/search", ErrorHandler.catchErrors(productsController.search));
+
 // ROLE == Admin
 // 1. Create products
 router.post(
@@ -44,5 +55,8 @@ router.put(
   ErrorHandler.catchErrors(AdminMiddleware.check),
   ErrorHandler.catchErrors(productsController.statusProduct)
 );
+
+// ROLE == Admin
+// 5. Ver ordenes de los clientes
 
 export default router;

@@ -56,6 +56,28 @@ export class ProductsController {
     );
   }
 
+  // ROLE == user logged
+  // viewCategory
+  async viewCategory(req: Request, res: Response, next: NextFunction) {
+    const { category } = req.body;
+
+    const builder = await AppDataSource.getRepository(Products)
+      .createQueryBuilder("product")
+      .where("product.category like :txt_two", { txt_two: `%${category}%` })
+      .getMany();
+
+    const productsData = builder.map((products: Products) => {
+      return products.toPayload();
+    });
+
+    return ResponseUtil.sendResponse(
+      res,
+      "Fetched products by category successfully",
+      productsData,
+      null
+    );
+  }
+
   // ROLE == Admin
   // 1. Create products
   async createProduct(req: Request, res: Response): Promise<Response> {
@@ -147,4 +169,6 @@ export class ProductsController {
       product.toPayload()
     );
   }
+
+  //   5. Ver ordenes de los clientes
 }
